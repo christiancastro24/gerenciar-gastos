@@ -124,7 +124,7 @@ export const Dashboard = () => {
               }
 
 
-          <FaTrash title="Deletar" size={30} onClick={() => removeTask(res)} style={{position: "relative", left: "3rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
+          <FaTrash title="Deletar" size={25} onClick={() => removeTask(res)} style={{position: "relative", left: "3rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
           
             </tr>
               </>
@@ -141,7 +141,7 @@ export const Dashboard = () => {
                 :
                 <td className="saida">{res.tipo}</td>
                 }
-                <FaTrash title="Deletar" size={30} onClick={() => removeTaskReduce(res)} style={{position: "relative", left: "3rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
+                <FaTrash title="Deletar" size={25} onClick={() => removeTaskReduce(res)} style={{position: "relative", left: "3rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
             </tr>
          
             

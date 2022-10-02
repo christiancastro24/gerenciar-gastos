@@ -16,8 +16,8 @@ export const Container = styled.div `
     table {
         width: 70%;
         border-collapse: separate;
-        margin-top: 5rem;
-        border-spacing: 10px 0.5rem;
+        margin-top: 1rem;
+        border-spacing: 5px 0.5rem;
         background-color: #1c2339;
         box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
     
@@ -32,7 +32,7 @@ export const Container = styled.div `
         color: #fff;
         padding: 1rem 2rem;
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 1.1rem;
         line-height: 1rem;
     }
 
@@ -45,7 +45,7 @@ export const Container = styled.div `
         color: #000;
         font-family: 'Lato', sans-serif;
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1rem;
         border-radius: 0.45rem;
         box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
     }
@@ -74,20 +74,20 @@ export const Container = styled.div `
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        margin-top: -10rem;
+        margin-top: -9rem;
         z-index: 1000;
 
         .entrada, .saida, .total {
             border-radius: 0.55rem;
-            width: 22rem;
-            height: 12rem;
+            width: 13rem;
+            height: 8.5rem;
             margin: 15px;
             color: #363F5F;
             padding-top: 1rem;
             box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 
             h3 {
-                font-size: 35px;
+                font-size: 25px;
                 color: #fff;
                 font-family: 'Lato', sans-serif;
                 padding-left: 2.5rem;
@@ -101,7 +101,7 @@ export const Container = styled.div `
                 color: #FFF;
                 text-align: right;
                 padding-right: 2.5rem;
-                font-size: 30px;
+                font-size: 20px;
             }
         }
 
