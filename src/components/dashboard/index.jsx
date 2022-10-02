@@ -16,11 +16,11 @@ export const Dashboard = () => {
     const initialRef = useRef(null)
     const finalRef = useRef(null)
 
-    const [indexMetas, setI] = useState(1);
+    const [index, setIndex] = useState(1);
 
 
-    const [metas, setMetas] = useState(JSON.parse(localStorage.getItem('entradas')) || [])
-    const [metasReduce, setMetasReduce] = useState(JSON.parse(localStorage.getItem('saida')) || [])
+    const [entradas, setEntradas] = useState(JSON.parse(localStorage.getItem('entradas')) || [])
+    const [saidas, setSaidas] = useState(JSON.parse(localStorage.getItem('saida')) || [])
 
     const clearInputs = () => {
       setCategoria('')
@@ -28,29 +28,29 @@ export const Dashboard = () => {
       setTitulo('')
     }
 
-    const sendValueEntrada = () => {
-      setI(indexMetas + 1)
-        setMetas([...metas,  {id: indexMetas, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Entrada'}])
-        localStorage.setItem("entradas", JSON.stringify(metas))
+    const enviarValorEntrada = () => {
+      setIndex(index + 1)
+      setEntradas([...entradas,  {id: index, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Entrada'}])
+        localStorage.setItem("entradas", JSON.stringify(entradas))
         onClose();
         clearInputs();
     }
 
-    const sendValueSaida = () => {
-      setI(indexMetas + 1)
-        setMetasReduce([...metasReduce,  {id: indexMetas, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Saída'}])
-        localStorage.setItem("saida", JSON.stringify(metasReduce))
+    const enviarValorSaida = () => {
+      setIndex(index + 1)
+      setSaidas([...saidas,  {id: index, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Saída'}])
+        localStorage.setItem("saida", JSON.stringify(saidas))
         onClose();
         clearInputs();
     
     }
 
     const removeTask = (index) => {
-      setMetas(metas.filter(x => x !== index))
+      setEntradas(entradas.filter(x => x !== index))
     }
 
     const removeTaskReduce = (index) => {
-      setMetasReduce(metasReduce.filter(x => x !== index))
+      setSaidas(saidas.filter(x => x !== index))
     }
 
     const resetarDespesas = () => {
@@ -62,13 +62,13 @@ export const Dashboard = () => {
     }
 
     useEffect(() => {
-        localStorage.setItem('entradas', JSON.stringify(metas))
-        localStorage.setItem('saida', JSON.stringify(metasReduce))
-    }, [metas, metasReduce])
+        localStorage.setItem('entradas', JSON.stringify(entradas))
+        localStorage.setItem('saida', JSON.stringify(saidas))
+    }, [entradas, saidas])
 
 
-    const valueMetas = metas.length > 0 && metas.map(a => a.valor).reduce((a, b) => parseInt(a) + parseInt(b))
-    const valueMetasReduce = metasReduce.length > 0 && metasReduce.map(a => a.valor).reduce((d, e) => parseInt(e) + parseInt(d))
+    const valueMetas = entradas.length > 0 && entradas.map(a => a.valor).reduce((a, b) => parseInt(a) + parseInt(b))
+    const valueMetasReduce = saidas.length > 0 && saidas.map(a => a.valor).reduce((d, e) => parseInt(e) + parseInt(d))
 
     return (
     <Container>
@@ -95,7 +95,7 @@ export const Dashboard = () => {
     </div>
         
         <table>
-        {metas.length > 0 || metasReduce.length > 0 ?
+        {entradas.length > 0 || saidas.length > 0 ?
         <>
             <thead>
             <tr>
@@ -111,7 +111,7 @@ export const Dashboard = () => {
         ""
         }
         <tbody style={{ backgroundColor: "#DDD"}}>
-        {metas.length > 0 && metas.map((res, index) => (
+        {entradas.length > 0 && entradas.map((res, index) => (
           <>
                 <tr key={index}> 
                 <td>{res.titulo}</td>
@@ -131,7 +131,7 @@ export const Dashboard = () => {
             
         ))}
 
-      {metasReduce.length > 0 && metasReduce.map((res, index) => (
+      {saidas.length > 0 && saidas.map((res, index) => (
                 <tr key={index}> 
                 <td>{res.titulo}</td>
                 <td>R$ {res.valor}</td>
@@ -184,8 +184,8 @@ export const Dashboard = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='green' mr={5} onClick={sendValueEntrada}>Entrada</Button>
-            <Button colorScheme='red' mr={5} onClick={sendValueSaida}>Saída</Button>           
+            <Button colorScheme='green' mr={5} onClick={enviarValorEntrada}>Entrada</Button>
+            <Button colorScheme='red' mr={5} onClick={enviarValorSaida}>Saída</Button>           
             </ModalFooter>
         </ModalContent>
       </Modal>
