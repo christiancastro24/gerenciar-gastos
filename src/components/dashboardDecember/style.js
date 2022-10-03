@@ -74,7 +74,7 @@ export const Container = styled.div `
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        margin-top: -9rem;
+        margin-top: -6rem;
         z-index: 1000;
 
         .entrada, .saida, .total {

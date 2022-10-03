@@ -1,15 +1,17 @@
 import './App.css';
-import { Dashboard } from './components/dashboard';
 import { ChakraProvider } from '@chakra-ui/react'
 import { Header } from './components/header';
+import { Routes } from './routes';
+import { ToastContainerComp } from './components/toastify';
 
 function App() {
   return (
     <main>
     <ChakraProvider>
+      <ToastContainerComp />
       <div>
         <Header />
-        <Dashboard />
+        <Routes />
       </div>
     </ChakraProvider>
     </main>

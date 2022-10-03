@@ -1,11 +1,12 @@
 /* eslint-disable no-mixed-operators */
 import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Container } from "./style"
-
+import { toast } from "react-toastify"
 import { FaTrash } from "react-icons/fa"
+import { motion } from 'framer-motion';
 
-export const Dashboard = () => {
+export const DashboardNovember = () => {
 
     const [titulo, setTitulo] = useState('')
     const [valor, setValor] = useState('')
@@ -19,8 +20,8 @@ export const Dashboard = () => {
     const [index, setIndex] = useState(1);
 
 
-    const [entradas, setEntradas] = useState(JSON.parse(localStorage.getItem('entradas')) || [])
-    const [saidas, setSaidas] = useState(JSON.parse(localStorage.getItem('saida')) || [])
+    const [entradasNovember, setEntradas] = useState(JSON.parse(localStorage.getItem('entradasNovember')) || [])
+    const [saidasNovember, setSaidas] = useState(JSON.parse(localStorage.getItem('saidasNovember')) || [])
 
     const clearInputs = () => {
       setCategoria('')
@@ -30,47 +31,60 @@ export const Dashboard = () => {
 
     const enviarValorEntrada = () => {
       setIndex(index + 1)
-      setEntradas([...entradas,  {id: index, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Entrada'}])
-        localStorage.setItem("entradas", JSON.stringify(entradas))
+      setEntradas([...entradasNovember,  {id: index, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Entrada'}])
+        localStorage.setItem("entradasNovember", JSON.stringify(entradasNovember))
+        toast.success('Transação adicionada!')
         onClose();
         clearInputs();
     }
 
     const enviarValorSaida = () => {
       setIndex(index + 1)
-      setSaidas([...saidas,  {id: index, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Saída'}])
-        localStorage.setItem("saida", JSON.stringify(saidas))
+      setSaidas([...saidasNovember,  {id: index, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Saída'}])
+        localStorage.setItem("saidasNovember", JSON.stringify(saidasNovember))
+        toast.success('Transação adicionada!')
         onClose();
         clearInputs();
     
     }
 
     const removeTask = (index) => {
-      setEntradas(entradas.filter(x => x !== index))
+      setEntradas(entradasNovember.filter(x => x !== index))
+      toast.success('Transação Removida!')
     }
 
     const removeTaskReduce = (index) => {
-      setSaidas(saidas.filter(x => x !== index))
+      setSaidas(saidasNovember.filter(x => x !== index))
+      toast.success('Transação Removida!')
     }
 
-    const resetarDespesas = () => {
-      localStorage.clear();
+    const resetarDespesas = useCallback(() => {
+      localStorage.removeItem('entradasNovember');
+      localStorage.removeItem('saidasNovember');
+
+      toast.success('Transaçãoes removidas!')
 
       setTimeout(() => {
         window.location.reload();
-      }, 1500)
-    }
+      }, 1000)
+    }, [])
 
     useEffect(() => {
-        localStorage.setItem('entradas', JSON.stringify(entradas))
-        localStorage.setItem('saida', JSON.stringify(saidas))
-    }, [entradas, saidas])
+        localStorage.setItem('entradasNovember', JSON.stringify(entradasNovember))
+        localStorage.setItem('saidasNovember', JSON.stringify(saidasNovember))
+    }, [entradasNovember, saidasNovember])
 
 
-    const valueMetas = entradas.length > 0 && entradas.map(a => a.valor).reduce((a, b) => parseInt(a) + parseInt(b))
-    const valueMetasReduce = saidas.length > 0 && saidas.map(a => a.valor).reduce((d, e) => parseInt(e) + parseInt(d))
+    const valueMetas = entradasNovember.length > 0 && entradasNovember.map(a => a.valor).reduce((a, b) => parseInt(a) + parseInt(b))
+    const valueMetasReduce = saidasNovember.length > 0 && saidasNovember.map(a => a.valor).reduce((d, e) => parseInt(e) + parseInt(d))
 
     return (
+      <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.9 }}
+    >
     <Container>
       <div style={{display: "flex", justifyContent: "flex-end", marginLeft: "auto"}}>
       <Button className="btn-open" colorScheme='purple' onClick={onOpen}>Nova Transação</Button>
@@ -95,7 +109,7 @@ export const Dashboard = () => {
     </div>
         
         <table>
-        {entradas.length > 0 || saidas.length > 0 ?
+        {entradasNovember.length > 0 || saidasNovember.length > 0 ?
         <>
             <thead>
             <tr>
@@ -111,7 +125,7 @@ export const Dashboard = () => {
         ""
         }
         <tbody style={{ backgroundColor: "#DDD"}}>
-        {entradas.length > 0 && entradas.map((res, index) => (
+        {entradasNovember.length > 0 && entradasNovember.map((res, index) => (
           <>
                 <tr key={index}> 
                 <td>{res.titulo}</td>
@@ -131,7 +145,7 @@ export const Dashboard = () => {
             
         ))}
 
-      {saidas.length > 0 && saidas.map((res, index) => (
+      {saidasNovember.length > 0 && saidasNovember.map((res, index) => (
                 <tr key={index}> 
                 <td>{res.titulo}</td>
                 <td>R$ {res.valor}</td>
@@ -190,5 +204,6 @@ export const Dashboard = () => {
         </ModalContent>
       </Modal>
         </Container>
+          </motion.div>
     )
 }
