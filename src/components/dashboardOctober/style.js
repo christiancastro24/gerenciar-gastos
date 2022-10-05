@@ -9,9 +9,10 @@ export const Container = styled.div `
     justify-content: center;
 
     h2 {
-        font-size: 30px;
+        font-size: 130px;
         text-decoration: underline #0095f6;
     }
+
 
     table {
         width: 70%;
@@ -126,4 +127,9 @@ export const Container = styled.div `
     label {
         margin: 0.3em;
     }
+
+    button {
+        color: #fff !important;
+    }
+    
 `
