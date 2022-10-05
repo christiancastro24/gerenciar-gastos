@@ -243,15 +243,15 @@ export const DashboardOctober = () => {
               }
 
 
-          <FaTrash title="Deletar" size={25} onClick={() => removeTask(res)} style={{position: "relative", left: "3rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
+          <FaTrash title="Deletar" size={25} onClick={() => removeTask(res)} style={{position: "relative", left: "2rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
               <div style={{display: "flex", width: "100%", justifyContent: "space-around", alignItems: "center"}}>
 
-          <FiEdit title="Editar" onClick={() => openToUpdate(index, res)} size={30} style={{position: "relative", left: "8.2rem", top: "-0.5rem", cursor: "pointer", color: "#fff"}} />
+          <FiEdit title="Editar" onClick={() => openToUpdate(index, res)} size={30} style={{position: "relative", left: "6.2rem", top: "-0.5rem", cursor: "pointer", color: "#fff"}} />
 
           { res.status === false ?
-            <MdOutlineDownloadDone title="Concluir" size={30} onClick={() => concluirTaskEntrada(res)} style={{position: "relative", left: "7.2rem", top: "-0.5rem", cursor: "pointer", color: "#fff"}} />
+            <MdOutlineDownloadDone title="Concluir" size={30} onClick={() => concluirTaskEntrada(res)} style={{position: "relative", left: "6rem", top: "-0.5rem", cursor: "pointer", color: "#fff"}} />
             :
-            <MdOutlineDownloadDone title="Concluída" size={30} style={{position: "relative", left: "7.2rem", top: "-0.5rem", cursor: "pointer", color: "green"}} />
+            <MdOutlineDownloadDone title="Concluída" size={30} style={{position: "relative", left: "6rem", top: "-0.5rem", cursor: "pointer", color: "green"}} />
           }
 
 
@@ -274,16 +274,16 @@ export const DashboardOctober = () => {
                 :
                 <td className="saida">{res.tipo}</td>
               }
-                <FaTrash title="Deletar" size={25} onClick={() => removeTaskReduce(res)} style={{position: "relative", left: "3rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
+                <FaTrash title="Deletar" size={25} onClick={() => removeTaskReduce(res)} style={{position: "relative", left: "2rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
 
                 <div style={{display: "flex", width: "100%", justifyContent: "space-around", alignItems: "center"}}>
 
-                <FiEdit title="Editar" onClick={() => openToUpdate(index, res)} size={30} style={{position: "relative", left: "8.2rem", top: "-0.5rem", cursor: "pointer", color: "#fff"}} />
+                <FiEdit title="Editar" onClick={() => openToUpdate(index, res)} size={30} style={{position: "relative", left: "6.2rem", top: "-0.5rem", cursor: "pointer", color: "#fff"}} />
 
                 { res.status === false ?
-                <MdOutlineDownloadDone title="Concluir" size={30} onClick={() => concluirTaskSaida(res)} style={{position: "relative", left: "7rem", top: "-0.5rem", cursor: "pointer", color: "#fff"}} />
+                <MdOutlineDownloadDone title="Concluir" size={30} onClick={() => concluirTaskSaida(res)} style={{position: "relative", left: "6rem", top: "-0.5rem", cursor: "pointer", color: "#fff"}} />
                  :
-                <MdOutlineDownloadDone title="Concluída" size={30} style={{position: "relative", left: "7rem", top: "-0.5rem", cursor: "pointer", color: "green"}} />
+                <MdOutlineDownloadDone title="Concluída" size={30} style={{position: "relative", left: "6rem", top: "-0.5rem", cursor: "pointer", color: "green"}} />
               }
 
           </div>
