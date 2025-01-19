@@ -163,16 +163,16 @@ export const DashboardAugust = () => {
         <div className="container-boxes">
           <div className="entrada">
             <h3>Entradas</h3>
-            <strong>R$ {calculateTotal("entradas") || 0}</strong>
+            <strong>R$ {calculateTotal("entries") || 0}</strong>
           </div>
           <div className="saida">
             <h3>Saídas</h3>
-            <strong>R$ {calculateTotal("saidas") || 0}</strong>
+            <strong>R$ {calculateTotal("exits") || 0}</strong>
           </div>
           <div className="total">
             <h3>Total</h3>
             <strong>
-              R$ {calculateTotal("entradas") - calculateTotal("saidas") || 0}
+              R$ {calculateTotal("entries") - calculateTotal("exits") || 0}
             </strong>
           </div>
         </div>
