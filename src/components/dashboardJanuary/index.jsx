@@ -141,7 +141,7 @@ export const DashboardJanuary = () => {
     edit ? updateTransaction() : addTransaction(select);
 
   return (
-  <motion.div
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -166,16 +166,16 @@ export const DashboardJanuary = () => {
         <div className="container-boxes">
           <div className="entrada">
             <h3>Entradas</h3>
-            <strong>R$ {calculateTotal("entradas") || 0}</strong>
+            <strong>R$ {calculateTotal("entries") || 0}</strong>
           </div>
           <div className="saida">
             <h3>Saídas</h3>
-            <strong>R$ {calculateTotal("saidas") || 0}</strong>
+            <strong>R$ {calculateTotal("exits") || 0}</strong>
           </div>
           <div className="total">
             <h3>Total</h3>
             <strong>
-              R$ {calculateTotal("entradas") - calculateTotal("saidas") || 0}
+              R$ {calculateTotal("entries") - calculateTotal("exits") || 0}
             </strong>
           </div>
         </div>
@@ -184,11 +184,11 @@ export const DashboardJanuary = () => {
           <table>
             <thead>
               <tr>
-                <th>Título</th>
-                <th>Valor</th>
-                <th>Categoria</th>
-                <th>Tipo</th>
-                <th>Ações</th>
+                <th>Title</th>
+                <th>Value</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody style={{ backgroundColor: "#DDD" }}>
@@ -212,7 +212,7 @@ export const DashboardJanuary = () => {
                         title="Edit"
                         size={30}
                         onClick={() => openModalToUpdate(transaction, type)}
-                        style={{ cursor: "pointer", color: "#000" }}
+                        style={{ cursor: "pointer", color: "#fff" }}
                       />
                       <MdOutlineDownloadDone
                         title={transaction.status ? "Completed" : "Complete"}
@@ -220,7 +220,7 @@ export const DashboardJanuary = () => {
                         onClick={() => toggleComplete(type, transaction.id)}
                         style={{
                           cursor: "pointer",
-                          color: transaction.status ? "green" : "#000",
+                          color: transaction.status ? "green" : "#fff",
                         }}
                       />
                     </td>

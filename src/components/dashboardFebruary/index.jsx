@@ -43,8 +43,8 @@ export const DashboardFebruary = () => {
   const [select, setSelect] = useState("Entry");
 
   const options = [
-    { label: "Entry", value: "Entry" },
-    { label: "Exit", value: "Exit" },
+    { label: "Entrada", value: "Entry" },
+    { label: "Saída", value: "Exit" },
   ];
 
   const clearInputs = () => {
@@ -166,16 +166,16 @@ export const DashboardFebruary = () => {
         <div className="container-boxes">
           <div className="entrada">
             <h3>Entradas</h3>
-            <strong>R$ {calculateTotal("entradas") || 0}</strong>
+            <strong>R$ {calculateTotal("entries") || 0}</strong>
           </div>
           <div className="saida">
             <h3>Saídas</h3>
-            <strong>R$ {calculateTotal("saidas") || 0}</strong>
+            <strong>R$ {calculateTotal("exits") || 0}</strong>
           </div>
           <div className="total">
             <h3>Total</h3>
             <strong>
-              R$ {calculateTotal("entradas") - calculateTotal("saidas") || 0}
+              R$ {calculateTotal("entries") - calculateTotal("exits") || 0}
             </strong>
           </div>
         </div>
@@ -199,7 +199,7 @@ export const DashboardFebruary = () => {
                     <td>R$ {transaction.value}</td>
                     <td>{transaction.category}</td>
                     <td style={{ color: type === "entries" ? "green" : "red" }}>
-                      {transaction.type}
+                      {transaction.type === 'Entry' ? 'Entrada' : 'Saída'}
                     </td>
                     <td>
                       <FaTrash
