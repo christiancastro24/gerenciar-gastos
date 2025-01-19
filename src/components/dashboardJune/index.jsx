@@ -138,166 +138,166 @@ export const DashboardJune = () => {
     edit ? updateTransaction() : addTransaction(select);
 
    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.9 }}
-      >
-        <Container>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginLeft: "auto",
-            }}
-          >
-            <Button colorScheme="purple" onClick={onOpen}>
-              Nova Transação
-            </Button>
-            <Button colorScheme="red" onClick={resetTransactions}>
-              Resetar
-            </Button>
-          </div>
-  
-          <div className="container-boxes">
-            <div className="entrada">
-              <h3>Entradas</h3>
-              <strong>R$ {calculateTotal("entries") || 0}</strong>
-            </div>
-            <div className="saida">
-              <h3>Saídas</h3>
-              <strong>R$ {calculateTotal("exits") || 0}</strong>
-            </div>
-            <div className="total">
-              <h3>Total</h3>
-              <strong>
-                R$ {calculateTotal("entries") - calculateTotal("exits") || 0}
-              </strong>
-            </div>
-          </div>
-  
-          {transactions.entries.length > 0 || transactions.exits.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Título</th>
-                  <th>Valor</th>
-                  <th>Categoria</th>
-                  <th>Tipo</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody style={{ backgroundColor: "#DDD" }}>
-                {["entries", "exits"].map((type) =>
-                  transactions[type].map((transaction, index) => (
-                    <tr key={transaction.id}>
-                      <td>{transaction.title}</td>
-                      <td>R$ {transaction.value}</td>
-                      <td>{transaction.category}</td>
-                      <td style={{ color: type === "entries" ? "green" : "red" }}>
-                      {transaction.type === 'Entry' ? 'Entrada' : 'Saída'}
-                      </td>
-                      <td style={{display: "flex", justifyContent: 'space-between'}}>
-                        <FaTrash
-                          title="Delete"
-                          size={25}
-                          onClick={() => removeTransaction(type, index)}
-                          style={{ cursor: "pointer", color: "#000" }}
-                        />
-                        <FiEdit
-                          title="Edit"
-                          size={30}
-                          onClick={() => openModalToUpdate(transaction, type)}
-                          style={{ cursor: "pointer", color: "#000" }}
-                        />
-                        <MdOutlineDownloadDone
-                          title={transaction.status ? "Completed" : "Complete"}
-                          size={30}
-                          onClick={() => toggleComplete(type, transaction.id)}
-                          style={{
-                            cursor: "pointer",
-                            color: transaction.status ? "green" : "#000",
-                          }}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          ) : null}
-  
-          <Modal
-            initialFocusRef={initialRef}
-            finalFocusRef={finalRef}
-            isOpen={isOpen}
-            onClose={onClose}
-          >
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>
-                {edit ? "Editar Registro" : "Registrar Entrada/Saída"}
-              </ModalHeader>
-              <ModalCloseButton />
-              <ModalBody pb={6}>
-                <FormControl mt={4}>
-                  <FormLabel>Título</FormLabel>
-                  <Input
-                    bg="#f2f2f2"
-                    borderColor="gray"
-                    ref={initialRef}
-                    placeholder="Título"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl mt={4}>
-                  <FormLabel>Valor</FormLabel>
-                  <Input
-                    bg="#f2f2f2"
-                    borderColor="gray"
-                    placeholder="Ex: 5000"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl mt={4}>
-                  <FormLabel>Categoria</FormLabel>
-                  <Input
-                    bg="#f2f2f2"
-                    borderColor="gray"
-                    placeholder="Categoria"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  />
-                </FormControl>
-                {!edit && (
-                  <FormControl mt={4}>
-                    <FormLabel>Tipo</FormLabel>
-                    <Select
-                      bg="#f2f2f2"
-                      borderColor="gray"
-                      value={select}
-                      onChange={(e) => setSelect(e.target.value)}
-                    >
-                      {options.map((option) => (
-                        <option value={option.value} key={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              </ModalBody>
-              <ModalFooter>
-                <Button colorScheme="orange" onClick={handleAddOrUpdate}>
-                  {edit ? "Atualizar" : "Registrar"}
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </Container>
-      </motion.div>
+     <motion.div
+       initial={{ opacity: 0 }}
+       animate={{ opacity: 1 }}
+       exit={{ opacity: 0 }}
+       transition={{ duration: 0.9 }}
+     >
+       <Container>
+         <div
+           style={{
+             display: "flex",
+             justifyContent: "flex-end",
+             marginLeft: "auto",
+           }}
+         >
+           <Button colorScheme="purple" onClick={onOpen}>
+             Nova Transação
+           </Button>
+           <Button colorScheme="red" onClick={resetTransactions}>
+             Resetar
+           </Button>
+         </div>
+ 
+         <div className="container-boxes">
+           <div className="entrada">
+             <h3>Entradas</h3>
+             <strong>R$ {calculateTotal("entries") || 0}</strong>
+           </div>
+           <div className="saida">
+             <h3>Saídas</h3>
+             <strong>R$ {calculateTotal("exits") || 0}</strong>
+           </div>
+           <div className="total">
+             <h3>Total</h3>
+             <strong>
+               R$ {calculateTotal("entries") - calculateTotal("exits") || 0}
+             </strong>
+           </div>
+         </div>
+ 
+         {transactions.entries.length > 0 || transactions.exits.length > 0 ? (
+           <table>
+             <thead>
+               <tr>
+                 <th>Título</th>
+                 <th>Valor</th>
+                 <th>Categoria</th>
+                 <th>Tipo</th>
+                 <th>Ações</th>
+               </tr>
+             </thead>
+             <tbody style={{ backgroundColor: "#DDD" }}>
+               {["entries", "exits"].map((type) =>
+                 transactions[type].map((transaction, index) => (
+                   <tr key={transaction.id}>
+                     <td>{transaction.title}</td>
+                     <td>R$ {transaction.value}</td>
+                     <td>{transaction.category}</td>
+                     <td style={{ color: type === "entries" ? "green" : "red" }}>
+                     {transaction.type === 'Entry' ? 'Entrada' : 'Saída'}
+                     </td>
+                     <td style={{display: "flex", justifyContent: 'space-between'}}>
+                       <FaTrash
+                         title="Delete"
+                         size={25}
+                         onClick={() => removeTransaction(type, index)}
+                         style={{ cursor: "pointer", color: "#000" }}
+                       />
+                       <FiEdit
+                         title="Edit"
+                         size={30}
+                         onClick={() => openModalToUpdate(transaction, type)}
+                         style={{ cursor: "pointer", color: "#000" }}
+                       />
+                       <MdOutlineDownloadDone
+                         title={transaction.status ? "Completed" : "Complete"}
+                         size={30}
+                         onClick={() => toggleComplete(type, transaction.id)}
+                         style={{
+                           cursor: "pointer",
+                           color: transaction.status ? "green" : "#000",
+                         }}
+                       />
+                     </td>
+                   </tr>
+                 ))
+               )}
+             </tbody>
+           </table>
+         ) : null}
+ 
+         <Modal
+           initialFocusRef={initialRef}
+           finalFocusRef={finalRef}
+           isOpen={isOpen}
+           onClose={onClose}
+         >
+           <ModalOverlay />
+           <ModalContent>
+             <ModalHeader>
+               {edit ? "Editar Registro" : "Registrar Entrada/Saída"}
+             </ModalHeader>
+             <ModalCloseButton />
+             <ModalBody pb={6}>
+               <FormControl mt={4}>
+                 <FormLabel>Título</FormLabel>
+                 <Input
+                   bg="#f2f2f2"
+                   borderColor="gray"
+                   ref={initialRef}
+                   placeholder="Título"
+                   value={title}
+                   onChange={(e) => setTitle(e.target.value)}
+                 />
+               </FormControl>
+               <FormControl mt={4}>
+                 <FormLabel>Valor</FormLabel>
+                 <Input
+                   bg="#f2f2f2"
+                   borderColor="gray"
+                   placeholder="Ex: 5000"
+                   value={value}
+                   onChange={(e) => setValue(e.target.value)}
+                 />
+               </FormControl>
+               <FormControl mt={4}>
+                 <FormLabel>Categoria</FormLabel>
+                 <Input
+                   bg="#f2f2f2"
+                   borderColor="gray"
+                   placeholder="Categoria"
+                   value={category}
+                   onChange={(e) => setCategory(e.target.value)}
+                 />
+               </FormControl>
+               {!edit && (
+                 <FormControl mt={4}>
+                   <FormLabel>Tipo</FormLabel>
+                   <Select
+                     bg="#f2f2f2"
+                     borderColor="gray"
+                     value={select}
+                     onChange={(e) => setSelect(e.target.value)}
+                   >
+                     {options.map((option) => (
+                       <option value={option.value} key={option.value}>
+                         {option.label}
+                       </option>
+                     ))}
+                   </Select>
+                 </FormControl>
+               )}
+             </ModalBody>
+             <ModalFooter>
+               <Button colorScheme="orange" onClick={handleAddOrUpdate}>
+                 {edit ? "Atualizar" : "Registrar"}
+               </Button>
+             </ModalFooter>
+           </ModalContent>
+         </Modal>
+       </Container>
+     </motion.div>
     );
 };
