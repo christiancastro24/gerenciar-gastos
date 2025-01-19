@@ -137,7 +137,7 @@ export const DashboardMarch = () => {
   const handleAddOrUpdate = () =>
     edit ? updateTransaction() : addTransaction(select);
 
-  return (
+ return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -181,11 +181,11 @@ export const DashboardMarch = () => {
           <table>
             <thead>
               <tr>
-                <th>Title</th>
-                <th>Value</th>
-                <th>Category</th>
-                <th>Type</th>
-                <th>Actions</th>
+                <th>Título</th>
+                <th>Valor</th>
+                <th>Categoria</th>
+                <th>Tipo</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody style={{ backgroundColor: "#DDD" }}>
@@ -196,9 +196,9 @@ export const DashboardMarch = () => {
                     <td>R$ {transaction.value}</td>
                     <td>{transaction.category}</td>
                     <td style={{ color: type === "entries" ? "green" : "red" }}>
-                      {transaction.type}
+                    {transaction.type === 'Entry' ? 'Entrada' : 'Saída'}
                     </td>
-                    <td>
+                    <td style={{display: "flex", justifyContent: 'space-between'}}>
                       <FaTrash
                         title="Delete"
                         size={25}
@@ -209,7 +209,7 @@ export const DashboardMarch = () => {
                         title="Edit"
                         size={30}
                         onClick={() => openModalToUpdate(transaction, type)}
-                        style={{ cursor: "pointer", color: "#fff" }}
+                        style={{ cursor: "pointer", color: "#000" }}
                       />
                       <MdOutlineDownloadDone
                         title={transaction.status ? "Completed" : "Complete"}
@@ -217,7 +217,7 @@ export const DashboardMarch = () => {
                         onClick={() => toggleComplete(type, transaction.id)}
                         style={{
                           cursor: "pointer",
-                          color: transaction.status ? "green" : "#fff",
+                          color: transaction.status ? "green" : "#000",
                         }}
                       />
                     </td>
