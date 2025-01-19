@@ -201,7 +201,7 @@ export const DashboardFebruary = () => {
                     <td style={{ color: type === "entries" ? "green" : "red" }}>
                       {transaction.type === 'Entry' ? 'Entrada' : 'Saída'}
                     </td>
-                    <td>
+                    <td style={{display: "flex", justifyContent: 'space-between'}}>
                       <FaTrash
                         title="Delete"
                         size={25}
