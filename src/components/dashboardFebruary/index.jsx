@@ -184,11 +184,11 @@ export const DashboardFebruary = () => {
           <table>
             <thead>
               <tr>
-                <th>Title</th>
-                <th>Value</th>
-                <th>Category</th>
-                <th>Type</th>
-                <th>Actions</th>
+                <th>Título</th>
+                <th>Valor</th>
+                <th>Categoria</th>
+                <th>Tipo</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody style={{ backgroundColor: "#DDD" }}>
@@ -212,7 +212,7 @@ export const DashboardFebruary = () => {
                         title="Edit"
                         size={30}
                         onClick={() => openModalToUpdate(transaction, type)}
-                        style={{ cursor: "pointer", color: "#fff" }}
+                        style={{ cursor: "pointer", color: "#000" }}
                       />
                       <MdOutlineDownloadDone
                         title={transaction.status ? "Completed" : "Complete"}
@@ -220,7 +220,7 @@ export const DashboardFebruary = () => {
                         onClick={() => toggleComplete(type, transaction.id)}
                         style={{
                           cursor: "pointer",
-                          color: transaction.status ? "green" : "#fff",
+                          color: transaction.status ? "green" : "#000",
                         }}
                       />
                     </td>
