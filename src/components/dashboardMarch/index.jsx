@@ -23,7 +23,7 @@ import { FiEdit } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { v4 as uuid } from "uuid";
 
-export const DashboardOctober = () => {
+export const DashboardMarch = () => {
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
   const [category, setCategory] = useState("");
@@ -36,8 +36,8 @@ export const DashboardOctober = () => {
   const finalRef = useRef(null);
 
   const [transactions, setTransactions] = useState({
-    entries: JSON.parse(localStorage.getItem("entriesOctober")) || [],
-    exits: JSON.parse(localStorage.getItem("exitsOctober")) || [],
+    entries: JSON.parse(localStorage.getItem("entriesMarch")) || [],
+    exits: JSON.parse(localStorage.getItem("exitsMarch")) || [],
   });
 
   const [select, setSelect] = useState("Entry");
@@ -108,19 +108,17 @@ export const DashboardOctober = () => {
 
   const resetTransactions = () => {
     setTransactions({ entries: [], exits: [] });
-    localStorage.removeItem("entriesOctober");
-    localStorage.removeItem("exitsOctober");
+    localStorage.removeItem("entriesMarch");
+    localStorage.removeItem("exitsMarch");
     toast.success("All transactions removed!");
     setTimeout(() => window.location.reload(), 1000);
   };
 
   useEffect(() => {
-    localStorage.setItem(
-      "entriesOctober",
-      JSON.stringify(transactions.entries)
-    );
-    localStorage.setItem("exitsOctober", JSON.stringify(transactions.exits));
+    localStorage.setItem("entriesMarch", JSON.stringify(transactions.entries));
+    localStorage.setItem("exitsMarch", JSON.stringify(transactions.exits));
   }, [transactions]);
+
   const calculateTotal = (type) => {
     return Array.isArray(transactions[type])
       ? transactions[type].reduce(

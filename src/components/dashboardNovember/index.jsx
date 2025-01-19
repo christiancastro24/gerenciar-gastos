@@ -1,209 +1,306 @@
-/* eslint-disable no-mixed-operators */
-import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
-import { useCallback, useEffect, useRef, useState } from "react"
-import { Container } from "./style"
-import { toast } from "react-toastify"
-import { FaTrash } from "react-icons/fa"
-import { motion } from 'framer-motion';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  Select,
+} from "@chakra-ui/react";
+import { Container } from "./style";
+import { motion } from "framer-motion";
+import { FaTrash } from "react-icons/fa";
+import { MdOutlineDownloadDone } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
+import { toast } from "react-toastify";
+import { v4 as uuid } from "uuid";
 
 export const DashboardNovember = () => {
+  const [title, setTitle] = useState("");
+  const [value, setValue] = useState("");
+  const [category, setCategory] = useState("");
+  const [status] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
-    const [titulo, setTitulo] = useState('')
-    const [valor, setValor] = useState('')
-    const [categoria, setCategoria] = useState('')
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = useRef(null);
+  const finalRef = useRef(null);
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
+  const [transactions, setTransactions] = useState({
+    entries: JSON.parse(localStorage.getItem("entriesNovember")) || [],
+    exits: JSON.parse(localStorage.getItem("exitsNovember")) || [],
+  });
 
-    const initialRef = useRef(null)
-    const finalRef = useRef(null)
+  const [select, setSelect] = useState("Entry");
 
-    const [index, setIndex] = useState(1);
+  const options = [
+    { label: "Entry", value: "Entry" },
+    { label: "Exit", value: "Exit" },
+  ];
 
+  const clearInputs = () => {
+    setCategory("");
+    setValue("");
+    setTitle("");
+  };
 
-    const [entradasNovember, setEntradas] = useState(JSON.parse(localStorage.getItem('entradasNovember')) || [])
-    const [saidasNovember, setSaidas] = useState(JSON.parse(localStorage.getItem('saidasNovember')) || [])
+  const addTransaction = useCallback(
+    (type) => {
+      const id = uuid().slice(0, 5);
+      const transaction = { id, title, value, category, type, status };
+      setTransactions((prevState) => ({
+        ...prevState,
+        [type === "Entry" ? "entries" : "exits"]: [
+          ...prevState[type === "Entry" ? "entries" : "exits"],
+          transaction,
+        ],
+      }));
+      toast.success("Transaction added!");
+      setSelect(type === "Entry" ? "Exit" : "Entry");
+      onClose();
+      clearInputs();
+    },
+    [title, value, category, status]
+  );
 
-    const clearInputs = () => {
-      setCategoria('')
-      setValor('')
-      setTitulo('')
+  const removeTransaction = (type, index) => {
+    setTransactions((prevState) => {
+      const updated = [...prevState[type]];
+      updated.splice(index, 1);
+      return { ...prevState, [type]: updated };
+    });
+    toast.success("Transaction removed!");
+  };
+
+  const toggleComplete = (type, transactionId) => {
+    setTransactions((prevState) => {
+      const updated = prevState[type].map((trans) =>
+        trans.id === transactionId ? { ...trans, status: !trans.status } : trans
+      );
+      return { ...prevState, [type]: updated };
+    });
+    toast.success("Transaction status updated!");
+  };
+
+  const updateTransaction = () => {
+    if (selectedTransaction) {
+      const { id, type } = selectedTransaction;
+      setTransactions((prevState) => {
+        const updated = prevState[type].map((trans) =>
+          trans.id === id ? { ...trans, title, value, category } : trans
+        );
+        return { ...prevState, [type]: updated };
+      });
+      onClose();
+      clearInputs();
+      toast.success("Transaction updated!");
     }
+  };
 
-    const enviarValorEntrada = () => {
-      setIndex(index + 1)
-      setEntradas([...entradasNovember,  {id: index, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Entrada'}])
-        localStorage.setItem("entradasNovember", JSON.stringify(entradasNovember))
-        toast.success('Transação adicionada!')
-        onClose();
-        clearInputs();
-    }
+  const resetTransactions = () => {
+    setTransactions({ entries: [], exits: [] });
+    localStorage.removeItem("entriesNovember");
+    localStorage.removeItem("exitsNovember");
+    toast.success("All transactions removed!");
+    setTimeout(() => window.location.reload(), 1000);
+  };
 
-    const enviarValorSaida = () => {
-      setIndex(index + 1)
-      setSaidas([...saidasNovember,  {id: index, titulo: titulo, valor: valor, categoria: categoria, tipo: 'Saída'}])
-        localStorage.setItem("saidasNovember", JSON.stringify(saidasNovember))
-        toast.success('Transação adicionada!')
-        onClose();
-        clearInputs();
-    
-    }
+  useEffect(() => {
+    localStorage.setItem(
+      "entriesNovember",
+      JSON.stringify(transactions.entries)
+    );
+    localStorage.setItem("exitsNovember", JSON.stringify(transactions.exits));
+  }, [transactions]);
 
-    const removeTask = (index) => {
-      setEntradas(entradasNovember.filter(x => x !== index))
-      toast.success('Transação Removida!')
-    }
+  const calculateTotal = (type) => {
+    return Array.isArray(transactions[type])
+      ? transactions[type].reduce(
+          (total, item) => total + parseInt(item.value, 10),
+          0
+        )
+      : 0;
+  };
 
-    const removeTaskReduce = (index) => {
-      setSaidas(saidasNovember.filter(x => x !== index))
-      toast.success('Transação Removida!')
-    }
+  const openModalToUpdate = (transaction, type) => {
+    setEdit(true);
+    setSelectedTransaction({ ...transaction, type });
+    onOpen();
+  };
 
-    const resetarDespesas = useCallback(() => {
-      localStorage.removeItem('entradasNovember');
-      localStorage.removeItem('saidasNovember');
+  const handleAddOrUpdate = () =>
+    edit ? updateTransaction() : addTransaction(select);
 
-      toast.success('Transaçãoes removidas!')
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000)
-    }, [])
-
-    useEffect(() => {
-        localStorage.setItem('entradasNovember', JSON.stringify(entradasNovember))
-        localStorage.setItem('saidasNovember', JSON.stringify(saidasNovember))
-    }, [entradasNovember, saidasNovember])
-
-
-    const valueMetas = entradasNovember.length > 0 && entradasNovember.map(a => a.valor).reduce((a, b) => parseInt(a) + parseInt(b))
-    const valueMetasReduce = saidasNovember.length > 0 && saidasNovember.map(a => a.valor).reduce((d, e) => parseInt(e) + parseInt(d))
-
-    return (
-      <motion.div 
+  return (
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.9 }}
     >
-    <Container>
-      <div style={{display: "flex", justifyContent: "flex-end", marginLeft: "auto"}}>
-      <Button className="btn-open" colorScheme='purple' onClick={onOpen}>Nova Transação</Button>
-      <Button className="btn-open" colorScheme='red' onClick={resetarDespesas}>Resetar</Button>
-      </div>
+      <Container>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginLeft: "auto",
+          }}
+        >
+          <Button colorScheme="purple" onClick={onOpen}>
+            Nova Transação
+          </Button>
+          <Button colorScheme="red" onClick={resetTransactions}>
+            Resetar
+          </Button>
+        </div>
 
-    <div className="container-boxes">
-      <div className="entrada">
-        <h3>Entradas </h3>
-        <strong>R$ {valueMetas || 0}</strong>
-      </div>
+        <div className="container-boxes">
+          <div className="entrada">
+            <h3>Entradas</h3>
+            <strong>R$ {calculateTotal("entradas") || 0}</strong>
+          </div>
+          <div className="saida">
+            <h3>Saídas</h3>
+            <strong>R$ {calculateTotal("saidas") || 0}</strong>
+          </div>
+          <div className="total">
+            <h3>Total</h3>
+            <strong>
+              R$ {calculateTotal("entradas") - calculateTotal("saidas") || 0}
+            </strong>
+          </div>
+        </div>
 
-      <div className="saida">
-        <h3>Saídas </h3>
-        <strong>R$ {valueMetasReduce || 0}</strong>
-      </div>
-
-      <div className="total">
-        <h3>Total </h3>
-        <strong>R$ {valueMetas -  valueMetasReduce || 0}</strong>
-      </div>
-    </div>
-        
-        <table>
-        {entradasNovember.length > 0 || saidasNovember.length > 0 ?
-        <>
+        {transactions.entries.length > 0 || transactions.exits.length > 0 ? (
+          <table>
             <thead>
-            <tr>
-            <th>Título</th>
-            <th>Valor</th>
-            <th>Categoria</th>
-            <th>Tipo</th>
-            <th> </th>
-             </tr>
+              <tr>
+                <th>Title</th>
+                <th>Value</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
             </thead>
-        </>
-        :
-        ""
-        }
-        <tbody style={{ backgroundColor: "#DDD"}}>
-        {entradasNovember.length > 0 && entradasNovember.map((res, index) => (
-          <>
-                <tr key={index}> 
-                <td>{res.titulo}</td>
-                <td>R$ {res.valor}</td>
-                <td>{res.categoria}</td>
-                {res.tipo === 'Entrada' ?
-                <td style={{color: "green"}}>{res.tipo}</td>
-                :
-                <td style={{color: "red"}}>{res.tipo}</td>
-              }
-
-
-          <FaTrash title="Deletar" size={25} onClick={() => removeTask(res)} style={{position: "relative", left: "3rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
-          
-            </tr>
-              </>
-            
-        ))}
-
-      {saidasNovember.length > 0 && saidasNovember.map((res, index) => (
-                <tr key={index}> 
-                <td>{res.titulo}</td>
-                <td>R$ {res.valor}</td>
-                <td>{res.categoria}</td>
-                {res.tipo === 'Entrada' ?
-                <td className="entrada">{res.tipo}</td>
-                :
-                <td className="saida">{res.tipo}</td>
-                }
-                <FaTrash title="Deletar" size={25} onClick={() => removeTaskReduce(res)} style={{position: "relative", left: "3rem", top: "1rem", cursor: "pointer", color: "#000"}}/>
-            </tr>
-         
-            
-        ))}
+            <tbody style={{ backgroundColor: "#DDD" }}>
+              {["entries", "exits"].map((type) =>
+                transactions[type].map((transaction, index) => (
+                  <tr key={transaction.id}>
+                    <td>{transaction.title}</td>
+                    <td>R$ {transaction.value}</td>
+                    <td>{transaction.category}</td>
+                    <td style={{ color: type === "entries" ? "green" : "red" }}>
+                      {transaction.type}
+                    </td>
+                    <td>
+                      <FaTrash
+                        title="Delete"
+                        size={25}
+                        onClick={() => removeTransaction(type, index)}
+                        style={{ cursor: "pointer", color: "#000" }}
+                      />
+                      <FiEdit
+                        title="Edit"
+                        size={30}
+                        onClick={() => openModalToUpdate(transaction, type)}
+                        style={{ cursor: "pointer", color: "#fff" }}
+                      />
+                      <MdOutlineDownloadDone
+                        title={transaction.status ? "Completed" : "Complete"}
+                        size={30}
+                        onClick={() => toggleComplete(type, transaction.id)}
+                        style={{
+                          cursor: "pointer",
+                          color: transaction.status ? "green" : "#fff",
+                        }}
+                      />
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
-       </table>
+          </table>
+        ) : null}
 
-
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Registar Entrada/Saída</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-
-          <FormControl mt={4}>
-              <FormLabel>Título</FormLabel>
-              <Input required ref={initialRef} placeholder='Título' type="text" value={titulo} onChange={e => setTitulo(e.target.value)}/>
-            </FormControl>
-
-        <br />
-            <FormControl>
-              <FormLabel>Valor</FormLabel>
-              <Input required placeholder='Ex: 5000' type="number" value={valor} onChange={e => setValor(e.target.value)} />
-            </FormControl>
-
-            <br />
-            <FormControl>
-              <FormLabel>Categoria</FormLabel>
-              <Input required  placeholder='Categoria' type="text" value={categoria} onChange={e => setCategoria(e.target.value)} />
-            </FormControl>
-
-            <br />
-
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme='green' mr={5} onClick={enviarValorEntrada}>Entrada</Button>
-            <Button colorScheme='red' mr={5} onClick={enviarValorSaida}>Saída</Button>           
+        <Modal
+          initialFocusRef={initialRef}
+          finalFocusRef={finalRef}
+          isOpen={isOpen}
+          onClose={onClose}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>
+              {edit ? "Editar Registro" : "Registrar Entrada/Saída"}
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl mt={4}>
+                <FormLabel>Título</FormLabel>
+                <Input
+                  bg="#f2f2f2"
+                  borderColor="gray"
+                  ref={initialRef}
+                  placeholder="Título"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Valor</FormLabel>
+                <Input
+                  bg="#f2f2f2"
+                  borderColor="gray"
+                  placeholder="Ex: 5000"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Categoria</FormLabel>
+                <Input
+                  bg="#f2f2f2"
+                  borderColor="gray"
+                  placeholder="Categoria"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                />
+              </FormControl>
+              {!edit && (
+                <FormControl mt={4}>
+                  <FormLabel>Tipo</FormLabel>
+                  <Select
+                    bg="#f2f2f2"
+                    borderColor="gray"
+                    value={select}
+                    onChange={(e) => setSelect(e.target.value)}
+                  >
+                    {options.map((option) => (
+                      <option value={option.value} key={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="orange" onClick={handleAddOrUpdate}>
+                {edit ? "Atualizar" : "Registrar"}
+              </Button>
             </ModalFooter>
-        </ModalContent>
-      </Modal>
-        </Container>
-          </motion.div>
-    )
-}
+          </ModalContent>
+        </Modal>
+      </Container>
+    </motion.div>
+  );
+};
