@@ -1,7 +1,7 @@
 import { Container } from "./styles";
 import { useHistory, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Select } from "@chakra-ui/react"; // Importando o componente Select
+import { Button, Select } from "@chakra-ui/react"; // Importando o componente Select
 
 export const Header = () => {
   const months = [
@@ -33,16 +33,22 @@ export const Header = () => {
     history.push(selectedPath);
   };
 
+  const redirectToResume = () => {
+    history.push('/resume');
+  }
+
   return (
     <Container>
       <h1>$VMONEY</h1>
+
+      <Button colorScheme="red" onClick={redirectToResume}>Resumo</Button>
       <Select
         value={selectedMonth}
         onChange={handleMonthChange}
         placeholder="Selecione um mês"
         variant="outline"
         size="lg"
-        style={{ width: "200px" }}
+        style={{ width: "250px" }}
       >
         {months.map((month) => (
           <option key={month.name} value={month.path}>

@@ -7,13 +7,13 @@ export const Container = styled.header`
   display: flex;
   z-index: -1000;
   border-top: 0.2px solid #000;
+  align-items: center;
 
   select {
     width: 200px;
     display: block;
     margin-left: auto;
     position: relative;
-    top: 4rem;
     left: -6rem;
     border: 4px solid #fff;
     font-weight: bold;

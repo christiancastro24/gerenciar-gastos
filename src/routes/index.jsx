@@ -11,6 +11,7 @@ import { DashboardSeptember } from "../components/dashboardSeptember";
 import { DashboardOctober } from "../components/dashboardOctober";
 import { DashboardNovember } from "../components/dashboardNovember";
 import { DashboardDecember } from "../components/dashboardDecember";
+import { Resume } from "../components/resume";
 
 export const Routes = () => {
     return (
@@ -28,6 +29,7 @@ export const Routes = () => {
             <Route path="/dashboard/October"> <DashboardOctober /> </Route>
             <Route path="/dashboard/November"> <DashboardNovember /> </Route>
             <Route path="/dashboard/December"> <DashboardDecember /> </Route>
+            <Route path="/resume"> <Resume /> </Route>
         </Switch>
     );
 }
