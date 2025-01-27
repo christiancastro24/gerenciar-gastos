@@ -45,7 +45,6 @@ export const Resume = () => {
         entries.forEach((entry) => {
           if (entry.title.toLowerCase().includes(selectedFilter)) {
             const value = parseFloat(entry.value || 0);
-            console.log(accumulatedTotals, "ANTES");
             if (!accumulatedTotals[month]) {
               accumulatedTotals[month] = 0;
             }
