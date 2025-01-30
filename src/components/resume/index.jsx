@@ -46,15 +46,14 @@ export const Resume = () => {
           if (entry.title.toLowerCase().includes(selectedFilter)) {
             const value = parseFloat(entry.value || 0);
             if (!accumulatedTotals[month]) {
-              accumulatedTotals[month] = 0;
+              accumulatedTotals[month] = { totalValue: 0, statusList: entry.status };
             }
-            accumulatedTotals[month] += value;
+            accumulatedTotals[month].totalValue += value;
           }
         });
         setFilterOptions(entries);
       }
     });
-
     setTotals(accumulatedTotals);
   }, [selectedFilter]);
 
@@ -78,7 +77,7 @@ export const Resume = () => {
   });
 
   const totalSum = sortedTotals.reduce((accumulator, current) => {
-    return accumulator + current[1];
+    return accumulator + current[1].totalValue;
   }, 0);
 
   const handleFilterChange = (event) => {
@@ -96,7 +95,7 @@ export const Resume = () => {
   return (
     <Container>
       <h1>
-        Resumo de Contas de:{" "}
+        Resumo de Contas Anuais:{" "}
         <strong>
           {selectedFilter
             ? selectedFilter[0].toUpperCase() + selectedFilter.slice(1)
@@ -125,13 +124,15 @@ export const Resume = () => {
           <tr>
             <th>Mês</th>
             <th>Valor Pago</th>
+            <th>Pago?</th>
           </tr>
         </thead>
         <tbody>
           {sortedTotals.map(([month, total]) => (
             <tr key={month}>
               <td>{month}</td>
-              <td>{formatCurrency(total)}</td>
+              <td>{formatCurrency(total.totalValue)}</td>
+              <td>{total.statusList ? 'Pago' : 'Não pago'}</td>
             </tr>
           ))}
         </tbody>
